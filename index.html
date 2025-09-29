@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cypress vs React Testing Library: Component Testing Commands</title>
+  <style>
+    :root {
+      --primary-bg: #ffffff;
+      --secondary-bg: #f8fafc;
+      --text-primary: #1f2937;
+      --text-secondary: #4b5563;
+      --border-color: #e2e8f0;
+      --header-bg: #1e40af;
+      --header-text: #ffffff;
+      --code-bg: #f1f5f9;
+      --hover-bg: #eff6ff;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      --transition: all 0.2s ease-in-out;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--secondary-bg);
+      color: var(--text-primary);
+      line-height: 1.6;
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: var(--text-primary);
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-top: 3rem;
+      margin-bottom: 1.5rem;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    p {
+      max-width: 800px;
+      margin: 0 auto 2rem;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin: 1.5rem 0;
+      background: var(--primary-bg);
+      border-radius: 0.75rem;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    th, td {
+      border: none;
+      padding: 1rem 1.25rem;
+      vertical-align: top;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+
+    th {
+      background: var(--header-bg);
+      color: var(--header-text);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-size: 0.9rem;
+    }
+
+    td {
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-primary);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover {
+      background: var(--hover-bg);
+      transition: var(--transition);
+    }
+
+    code {
+      display: block;
+      background: var(--code-bg);
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      font-family: 'Fira Code', 'Consolas', monospace;
+      font-size: 0.9rem;
+      white-space: pre-wrap;
+      line-height: 1.5;
+      color: var(--text-primary);
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem;
+      }
+
+      h1 {
+        font-size: 1.75rem;
+      }
+
+      h2 {
+        font-size: 1.25rem;
+      }
+
+      table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+
+      th, td {
+        padding: 0.75rem;
+        font-size: 0.85rem;
+      }
+
+      code {
+        font-size: 0.8rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+
+      th, td {
+        padding: 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Cypress vs React Testing Library: Component Testing Commands</h1>
+  <p>This cheatsheet shows equivalent commands between <strong>Cypress Component Testing</strong> and <strong>React Testing Library (RTL)</strong>, including the necessary imports.</p>
+
+  <h2>🟢 Core Commands</h2>
+  <table>
+    <thead>
+      <tr><th>Purpose</th><th>Cypress Component Testing</th><th>React Testing Library</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Render a component</strong></td>
+        <td><code>import { mount } from "cypress/react";<br>cy.mount(&lt;Component /&gt;)</code></td>
+        <td><code>import { render, screen } from "@testing-library/react";<br>render(&lt;Component /&gt;)</code></td>
+      </tr>
+      <tr>
+        <td><strong>Query element by text</strong></td>
+        <td><code>// built into Cypress<br>cy.contains("text")</code></td>
+        <td><code>import { render, screen } from "@testing-library/react";<br>screen.getByText("text")</code></td>
+      </tr>
+      <tr>
+        <td><strong>Query element by role</strong></td>
+        <td><code>import "@testing-library/cypress/add-commands";<br>cy.findByRole("button", { name: /submit/i })</code></td>
+        <td><code>import { render, screen } from "@testing-library/react";<br>screen.getByRole("button", { name: /submit/i })</code></td>
+      </tr>
+      <tr>
+        <td><strong>Query element by test id</strong></td>
+        <td><code>// built into Cypress<br>cy.get("[data-testid='my-element']")</code></td>
+        <td><code>import { render, screen } from "@testing-library/react";<br>screen.getByTestId("my-element")</code></td>
+      </tr>
+      <tr>
+        <td><strong>Assert element exists</strong></td>
+        <td><code>// built into Cypress<br>cy.get("selector").should("exist")</code></td>
+        <td><code>import "@testing-library/jest-dom";<br>expect(screen.getByText("text")).toBeInTheDocument()</code></td>
+      </tr>
+      <tr>
+        <td><strong>Assert element not exists</strong></td>
+        <td><code>// built into Cypress<br>cy.get("selector").should("not.exist")</code></td>
+        <td><code>import "@testing-library/jest-dom";<br>expect(screen.queryByText("text")).not.toBeInTheDocument()</code></td>
+      </tr>
+      <tr>
+        <td><strong>Interact: click</strong></td>
+        <td><code>// built into Cypress<br>cy.get("button").click()</code></td>
+        <td><code>import { fireEvent } from "@testing-library/react";<br>fireEvent.click(screen.getByRole("button"))<br><br>// OR with userEvent<br>import userEvent from "@testing-library/user-event";<br>userEvent.click(screen.getByRole("button"))</code></td>
+      </tr>
+      <tr>
+        <td><strong>Interact: type text</strong></td>
+        <td><code>// built into Cypress<br>cy.get("input").type("Hello")</code></td>
+        <td><code>import { fireEvent } from "@testing-library/react";<br>fireEvent.change(screen.getByRole("textbox"), { target: { value: "Hello" }})<br><br>// OR with userEvent<br>import userEvent from "@testing-library/user-event";<br>userEvent.type(screen.getByRole("textbox"), "Hello")</code></td>
+      </tr>
+      <tr>
+        <td><strong>Check element value</strong></td>
+        <td><code>// built into Cypress<br>cy.get("input").should("have.value", "Hello")</code></td>
+        <td><code>import "@testing-library/jest-dom";<br>expect(screen.getByRole("textbox")).toHaveValue("Hello")</code></td>
+      </tr>
+      <tr>
+        <td><strong>Wait for async updates</strong></td>
+        <td><code>// built into Cypress (auto-retry)<br>cy.contains("Loaded")</code></td>
+        <td><code>import { render, screen } from "@testing-library/react";<br>await screen.findByText("Loaded")</code></td>
+      </tr>
+      <tr>
+        <td><strong>Run code before/after test</strong></td>
+        <td><code>// Mocha built-in (no extra import)<br>beforeEach(() =&gt; {...})<br>afterEach(() =&gt; {...})</code></td>
+        <td><code>// Jest built-in (no extra import)<br>beforeEach(() =&gt; {...})<br>afterEach(() =&gt; {...})</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>🔎 Additional Queries</h2>
+  <table>
+    <thead>
+      <tr><th>Purpose</th><th>Cypress Component Testing</th><th>React Testing Library</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>By label text</strong></td><td><code>cy.findByLabelText("Email")</code></td><td><code>screen.getByLabelText("Email")</code></td></tr>
+      <tr><td><strong>By placeholder text</strong></td><td><code>cy.findByPlaceholderText("Enter name")</code></td><td><code>screen.getByPlaceholderText("Enter name")</code></td></tr>
+      <tr><td><strong>By display value</strong></td><td><code>cy.findByDisplayValue("Hello World")</code></td><td><code>screen.getByDisplayValue("Hello World")</code></td></tr>
+    </tbody>
+  </table>
+
+  <h2>✅ Additional Assertions</h2>
+  <table>
+    <thead>
+      <tr><th>Purpose</th><th>Cypress Component Testing</th><th>React Testing Library</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Check text content</strong></td><td><code>cy.get("h1").should("have.text", "Welcome")</code></td><td><code>expect(screen.getByRole("heading")).toHaveTextContent("Welcome")</code></td></tr>
+      <tr><td><strong>Check element attribute</strong></td><td><code>cy.get("img").should("have.attr", "alt", "logo")</code></td><td><code>expect(screen.getByRole("img")).toHaveAttribute("alt", "logo")</code></td></tr>
+      <tr><td><strong>Check element class</strong></td><td><code>cy.get("button").should("have.class", "active")</code></td><td><code>expect(screen.getByRole("button")).toHaveClass("active")</code></td></tr>
+      <tr><td><strong>Check number of elements</strong></td><td><code>cy.get(".item").should("have.length", 3)</code></td><td><code>expect(screen.getAllByRole("listitem")).toHaveLength(3)</code></td></tr>
+    </tbody>
+  </table>
+
+  <h2>🎭 Additional Interactions</h2>
+  <table>
+    <thead>
+      <tr><th>Purpose</th><th>Cypress Component Testing</th><th>React Testing Library</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Focus / Blur</strong></td><td><code>cy.get("input").focus().blur()</code></td><td><code>fireEvent.focus(screen.getByRole("textbox"))<br>fireEvent.blur(screen.getByRole("textbox"))</code></td></tr>
+      <tr><td><strong>Hover</strong></td><td><code>cy.get("button").trigger("mouseover")</code></td><td><code>userEvent.hover(screen.getByRole("button"))</code></td></tr>
+      <tr><td><strong>Select dropdown option</strong></td><td><code>cy.get("select").select("Option 1")</code></td><td><code>userEvent.selectOptions(screen.getByRole("combobox"), "Option 1")</code></td></tr>
+      <tr><td><strong>Checkbox / Radio</strong></td><td><code>cy.get("input[type='checkbox']").check()<br>cy.get("input[type='radio']").check()</code></td><td><code>userEvent.click(screen.getByRole("checkbox"))<br>userEvent.click(screen.getByRole("radio"))</code></td></tr>
+    </tbody>
+  </table>
+
+  <h2>⏱ Async & Debugging</h2>
+  <table>
+    <thead>
+      <tr><th>Purpose</th><th>Cypress Component Testing</th><th>React Testing Library</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Wait for condition</strong></td><td><code>cy.get(".item").should("have.length", 3)</code></td><td><code>await waitFor(() =&gt; expect(screen.getAllByRole("listitem")).toHaveLength(3))</code></td></tr>
+      <tr><td><strong>Debugging</strong></td><td><code>cy.get("selector").debug()</code></td><td><code>screen.debug()</code></td></tr>
+    </tbody>
+  </table>
+</body>
+</html>
